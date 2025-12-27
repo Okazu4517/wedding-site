@@ -525,6 +525,31 @@
     });
   });
 
+<script>
+/* ===== 席次マップ：ズームボタン方式 ===== */
+
+let mapScale = 1;
+const mapWrapper = document.querySelector('.map-wrapper');
+
+function applyZoom() {
+  mapWrapper.style.transform = `scale(${mapScale})`;
+}
+
+function zoomIn() {
+  mapScale = Math.min(mapScale + 0.2, 2.5);
+  applyZoom();
+}
+
+function zoomOut() {
+  mapScale = Math.max(mapScale - 0.2, 0.6);
+  applyZoom();
+}
+
+function zoomReset() {
+  mapScale = 1;
+  applyZoom();
+}
+
 </script>
 
 </body>
