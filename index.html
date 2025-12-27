@@ -107,12 +107,27 @@
   }
   
   /* 会場全体（1枚の地図） */
-  .map-wrapper {
-    position: relative;
-    width: 1600px;
-    height: 1200px;
-    padding: 40px;
-  }
+.zoom-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.zoom-controls button {
+  padding: 6px 14px;
+  font-size: 16px;
+  border-radius: 20px;
+  border: 1px solid #d1c4e9;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* ズーム対象 */
+.map-wrapper {
+  transform-origin: center center;
+  transition: transform 0.2s ease;
+}
   
   /* 高砂 */
   .head-table {
@@ -278,11 +293,11 @@
 <div id="seating" class="tab-content">
   <h2>席次表</h2>
 
-  <div class="controls">
-    <button onclick="zoomIn()">＋ 拡大</button>
-    <button onclick="zoomOut()">－ 縮小</button>
-    <button onclick="resetZoom()">リセット</button>
-  </div>
+<div class="zoom-controls">
+  <button type="button" onclick="zoomIn()">＋</button>
+  <button type="button" onclick="zoomOut()">－</button>
+  <button type="button" onclick="zoomReset()">リセット</button>
+</div>
 <div class="map-scroll">
   <div class="map-container" id="mapContainer">
     <div class="map-wrapper">
