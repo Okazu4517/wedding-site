@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>私たちの結婚式</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+JP&display=swap" rel="stylesheet">
 
 <style>
@@ -85,16 +85,21 @@
     border: 1px solid #e0b0c7;
     border-radius: 12px;
     background: #fdf7f4;
-    touch-action: none;
-  }
 
-  .hall-map {
+    /* スマホ操作 */
+    touch-action: pan-x pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* 会場全体（1枚の地図） */
+  .map-wrapper {
     position: relative;
-    width: 1000px;
-    height: 700px;
+    width: 1600px;
+    height: 1200px;
     padding: 40px;
   }
-
+  
+  /* 高砂 */
   .head-table {
     position: absolute;
     top: 20px;
@@ -108,12 +113,11 @@
 
   .table {
     position: absolute;
-    width: 200px;
-    background: #fff;
-    border-radius: 20px;
-    padding: 16px;
+    width: 260px;
+    height: 260px;
     text-align: center;
-    cursor: default;
+    user-select: none;
+    pointer-events: none; /* 誤操作防止 */
   }
 
   /* ===== テーブル配置（A〜J）===== */
@@ -153,15 +157,7 @@
   cursor: pointer;
 }
 
-.map-container {
-  width: 100%;
-  height: 520px;
-  overflow: hidden;
-  border: 1px solid #e0b0c7;
-  border-radius: 12px;
-  background: #fdf7f4;
-  touch-action: none;
-}
+
 
 .hall-map {
   position: relative;
@@ -274,8 +270,8 @@
   </div>
 
   <div class="map-container" id="mapContainer">
-    <div class="hall-map" id="hallMap">
-
+    <!--<div class="hall-map" id="hallMap">-->
+    <div class="map-wrapper">
       <div class="head-table">
         高砂<br>
         一就 & 美嵐
@@ -500,62 +496,6 @@
     });
   });
 
-  /* ===== 席次マップ：ズーム ===== */
-  let scale = 1;
-  const map = document.getElementById('hallMap');
-
-  function zoomIn() {
-    scale += 0.1;
-    map.style.transform = `scale(${scale})`;
-  }
-
-  function zoomOut() {
-    scale = Math.max(0.5, scale - 0.1);
-    map.style.transform = `scale(${scale})`;
-  }
-
-  function resetZoom() {
-    scale = 1;
-    map.style.transform = 'scale(1)';
-  }
-
-  /* ===== スマホ：ピンチズーム対応 ===== */
-
-  let initialDistance = null;
-  let initialScale = scale; // 既存の scale を使う
-
-  const container = document.getElementById('mapContainer');
-
-  container.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 2) {
-      initialDistance = getDistance(e.touches[0], e.touches[1]);
-      initialScale = scale;
-    }
-  }, { passive: false });
-
-  container.addEventListener('touchmove', (e) => {
-    if (e.touches.length === 2 && initialDistance) {
-      e.preventDefault(); // 画面ズーム防止
-
-      const currentDistance = getDistance(e.touches[0], e.touches[1]);
-      const zoomFactor = currentDistance / initialDistance;
-
-      scale = Math.min(Math.max(initialScale * zoomFactor, 0.5), 2.5);
-      map.style.transform = `scale(${scale})`;
-    }
-  }, { passive: false });
-
-  container.addEventListener('touchend', () => {
-    if (container.touches?.length < 2) {
-      initialDistance = null;
-    }
-  });
-
-  function getDistance(touch1, touch2) {
-    const dx = touch1.pageX - touch2.pageX;
-    const dy = touch1.pageY - touch2.pageY;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
 </script>
 
 </body>
