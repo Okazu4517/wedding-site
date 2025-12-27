@@ -1,1 +1,562 @@
-a
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>私たちの結婚式</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+JP&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Noto Serif JP', serif;
+    background: #fffaf8;
+    color: #4b2e2e;
+    line-height: 1.8;
+  }
+
+  header {
+    background: linear-gradient(to right, #fce4ec, #f8bbd0);
+    padding: 50px 20px;
+    text-align: center;
+  }
+
+  header h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 52px;
+    margin-bottom: 10px;
+  }
+
+  header p {
+    font-size: 18px;
+  }
+
+  .tabs {
+    display: flex;
+    justify-content: center;
+    background-color: #fff0f5;
+    border-bottom: 2px solid #e0b0c7;
+  }
+
+  .tab {
+    padding: 14px 26px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #6a1b9a;
+  }
+
+  .tab.active {
+    border-bottom: 3px solid #ba68c8;
+    background-color: #fff;
+  }
+
+  .tab-content {
+    display: none;
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  h2 {
+    border-bottom: 2px solid #e1bee7;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    color: #6a1b9a;
+  }
+
+  .note {
+    font-size: 14px;
+    color: #888;
+  }
+
+  /* ===== 席次マップ ===== */
+
+  .map-container {
+    width: 100%;
+    height: 500px;
+    overflow: auto;
+    border: 1px solid #e0b0c7;
+    border-radius: 12px;
+    background: #fdf7f4;
+    touch-action: none;
+  }
+
+  .hall-map {
+    position: relative;
+    width: 1000px;
+    height: 700px;
+    padding: 40px;
+  }
+
+  .head-table {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fde2eb;
+    padding: 16px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+  }
+
+  .table {
+    position: absolute;
+    width: 200px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px;
+    text-align: center;
+    cursor: default;
+  }
+
+  /* ===== テーブル配置（A〜J）===== */
+
+  /* 上段 */
+  .table-a { top: 180px; left: 200px; }
+  .table-b { top: 180px; left: 520px; }
+  .table-c { top: 180px; left: 840px; }
+
+  /* 中段 */
+  .table-d { top: 460px; left: 200px; }
+  .table-e { top: 460px; left: 520px; }
+  .table-f { top: 460px; left: 840px; }
+
+  /* 下段 */
+  .table-g { top: 740px; left: 200px; }
+  .table-h { top: 740px; left: 520px; }
+  .table-i { top: 740px; left: 840px; }
+
+  /* 右端（やや離して1卓） */
+  .table-j { top: 460px; left: 1160px; }
+
+/* ===== 席次マップ拡張 ===== */
+
+.controls {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.controls button {
+  margin: 0 6px;
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 20px;
+  border: 1px solid #d1c4e9;
+  background: #fff;
+  cursor: pointer;
+}
+
+.map-container {
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+  border: 1px solid #e0b0c7;
+  border-radius: 12px;
+  background: #fdf7f4;
+  touch-action: none;
+}
+
+.hall-map {
+  position: relative;
+  width: 1400px;
+  height: 1000px;
+  transform-origin: 0 0;
+}
+
+.head-table {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fde2eb;
+  padding: 18px 36px;
+  border-radius: 30px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.table {
+  position: absolute;
+  width: 220px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 14px;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+  cursor: grab;
+}
+
+.table:active {
+  cursor: grabbing;
+}
+
+.table strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #6a1b9a;
+}
+
+/* ===== 円卓スタイル ===== */
+
+.table {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  text-align: center;
+}
+
+/* 中央の丸テーブル */
+.round-table {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  background: #fde2eb;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #6a1b9a;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.table-label {
+  font-size: 18px;
+}
+
+/* 円周上のゲスト */
+.guests {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.guests li {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform:
+    rotate(calc(360deg / 8 * var(--i)))
+    translate(110px)
+    rotate(calc(-360deg / 8 * var(--i)));
+  transform-origin: center;
+  font-size: 12px;
+  white-space: nowrap;
+  background: #fff;
+  padding: 2px 6px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+</style>
+
+
+<div id="seating" class="tab-content">
+  <h2>席次表</h2>
+
+  <div class="controls">
+    <button onclick="zoomIn()">＋ 拡大</button>
+    <button onclick="zoomOut()">－ 縮小</button>
+    <button onclick="resetZoom()">リセット</button>
+  </div>
+
+  <div class="map-container" id="mapContainer">
+    <div class="hall-map" id="hallMap">
+
+      <div class="head-table">
+        高砂<br>
+        一就 & 美嵐
+      </div>
+
+      <!-- テーブル A -->
+      <div class="table table-a">
+        <div class="round-table"><span class="table-label">A</span></div>
+        <ul class="guests">
+          <li style="--i:0">田中 太郎</li>
+          <li style="--i:1">佐藤 花子</li>
+          <li style="--i:2">鈴木 一郎</li>
+          <li style="--i:3">高橋 美咲</li>
+          <li style="--i:4">伊藤 健</li>
+          <li style="--i:5">山本 彩</li>
+          <li style="--i:6">中川 亮</li>
+          <li style="--i:7">松本 由紀</li>
+        </ul>
+      </div>
+
+      <!-- テーブル B -->
+      <div class="table table-b">
+        <div class="round-table"><span class="table-label">B</span></div>
+        <ul class="guests">
+          <li style="--i:0">山田 太一</li>
+          <li style="--i:1">中村 美優</li>
+          <li style="--i:2">小林 健</li>
+          <li style="--i:3">加藤 さくら</li>
+          <li style="--i:4">岡本 翔</li>
+          <li style="--i:5">石田 明</li>
+          <li style="--i:6">藤田 直樹</li>
+          <li style="--i:7">森川 奈々</li>
+        </ul>
+      </div>
+
+      <!-- テーブル C -->
+      <div class="table table-c">
+        <div class="round-table"><span class="table-label">C</span></div>
+        <ul class="guests">
+          <li style="--i:0">佐々木 誠</li>
+          <li style="--i:1">橋本 愛</li>
+          <li style="--i:2">長谷川 恒一</li>
+          <li style="--i:3">坂本 真</li>
+          <li style="--i:4">吉田 光</li>
+          <li style="--i:5">西村 遥</li>
+          <li style="--i:6">前田 俊</li>
+          <li style="--i:7">青木 香</li>
+        </ul>
+      </div>
+
+      <!-- テーブル D -->
+      <div class="table table-d">
+        <div class="round-table"><span class="table-label">D</span></div>
+        <ul class="guests">
+          <li style="--i:0">木村 拓哉</li>
+          <li style="--i:1">遠藤 恵</li>
+          <li style="--i:2">池田 裕</li>
+          <li style="--i:3">宮崎 玲奈</li>
+          <li style="--i:4">北村 隆</li>
+          <li style="--i:5">三浦 春</li>
+          <li style="--i:6">福田 修</li>
+          <li style="--i:7">金子 真央</li>
+        </ul>
+      </div>
+
+      <!-- テーブル E -->
+      <div class="table table-e">
+        <div class="round-table"><span class="table-label">E</span></div>
+        <ul class="guests">
+          <li style="--i:0">川口 剛</li>
+          <li style="--i:1">岩崎 千尋</li>
+          <li style="--i:2">安藤 誠</li>
+          <li style="--i:3">小野 真理</li>
+          <li style="--i:4">本田 大輔</li>
+          <li style="--i:5">永井 優</li>
+          <li style="--i:6">久保 直人</li>
+          <li style="--i:7">野口 里奈</li>
+        </ul>
+      </div>
+
+      <!-- テーブル F -->
+      <div class="table table-f">
+        <div class="round-table"><span class="table-label">F</span></div>
+        <ul class="guests">
+          <li style="--i:0">原田 恒一</li>
+          <li style="--i:1">奥村 美咲</li>
+          <li style="--i:2">酒井 亮</li>
+          <li style="--i:3">須藤 彩</li>
+          <li style="--i:4">柴田 勇</li>
+          <li style="--i:5">平野 香</li>
+          <li style="--i:6">水野 恒一</li>
+          <li style="--i:7">竹内 結衣</li>
+        </ul>
+      </div>
+
+      <!-- テーブル G -->
+      <div class="table table-g">
+        <div class="round-table"><span class="table-label">G</span></div>
+        <ul class="guests">
+          <li style="--i:0">大野 智</li>
+          <li style="--i:1">松井 玲奈</li>
+          <li style="--i:2">堀内 健</li>
+          <li style="--i:3">高田 里穂</li>
+          <li style="--i:4">関口 亮</li>
+          <li style="--i:5">今井 彩</li>
+          <li style="--i:6">相原 誠</li>
+          <li style="--i:7">高野 奈央</li>
+        </ul>
+      </div>
+
+      <!-- テーブル H -->
+      <div class="table table-h">
+        <div class="round-table"><span class="table-label">H</span></div>
+        <ul class="guests">
+          <li style="--i:0">片岡 剛</li>
+          <li style="--i:1">土屋 真由</li>
+          <li style="--i:2">吉川 誠</li>
+          <li style="--i:3">森田 彩</li>
+          <li style="--i:4">荒木 恒一</li>
+          <li style="--i:5">村上 奈々</li>
+          <li style="--i:6">谷口 修</li>
+          <li style="--i:7">杉本 香</li>
+        </ul>
+      </div>
+
+      <!-- テーブル I -->
+      <div class="table table-i">
+        <div class="round-table"><span class="table-label">I</span></div>
+        <ul class="guests">
+          <li style="--i:0">河合 誠</li>
+          <li style="--i:1">星野 未来</li>
+          <li style="--i:2">長田 剛</li>
+          <li style="--i:3">宮下 美穂</li>
+          <li style="--i:4">新井 恒一</li>
+          <li style="--i:5">戸田 彩</li>
+          <li style="--i:6">川島 健</li>
+          <li style="--i:7">飯田 玲</li>
+        </ul>
+      </div>
+
+      <!-- テーブル J -->
+      <div class="table table-j">
+        <div class="round-table"><span class="table-label">J</span></div>
+        <ul class="guests">
+          <li style="--i:0">渡辺 恒一</li>
+          <li style="--i:1">吉岡 彩</li>
+          <li style="--i:2">浜田 修</li>
+          <li style="--i:3">岡田 真由</li>
+          <li style="--i:4">稲葉 剛</li>
+          <li style="--i:5">井上 美咲</li>
+          <li style="--i:6">秋山 健</li>
+          <li style="--i:7">小泉 玲奈</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">※席次は変更となる場合がございます</p>
+</div>
+
+
+
+</head>
+
+<body>
+
+<header>
+  <h1>Yuki & Aoi</h1>
+  <p>2026年5月30日 @ マリエールウィル高崎</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-tab="greeting">ご挨拶</button>
+  <button class="tab" data-tab="menu">メニュー</button>
+  <button class="tab" data-tab="access">アクセス</button>
+  <button class="tab" data-tab="seating">席次表</button>
+</div>
+
+<div id="greeting" class="tab-content active">
+  <h2>ご挨拶</h2>
+  <p>
+    本日は私たちの結婚式にご列席いただき、誠にありがとうございます。<br>
+    大切な皆さまと特別な一日を過ごせることを、心より嬉しく思っております。
+  </p>
+</div>
+
+<div id="menu" class="tab-content">
+  <h2>お料理メニュー</h2>
+  <ul>
+    <li>前菜：季節の彩りサラダ</li>
+    <li>スープ：コンソメスープ</li>
+    <li>魚料理：真鯛のポワレ</li>
+    <li>肉料理：国産牛フィレ肉のロースト</li>
+    <li>デザート：ウェディングケーキ＆フルーツ</li>
+  </ul>
+  <p class="note">※内容は変更となる場合がございます</p>
+</div>
+
+<div id="access" class="tab-content">
+  <h2>式場へのアクセス</h2>
+  <p><strong>マリエールウィル高崎</strong></p>
+  <p>〒370-0069 群馬県高崎市飯塚町1361</p>
+  <p>JR高崎問屋町駅 徒歩約10分</p>
+  <p>駐車場：無料（300台）</p>
+
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6427.586553130519!2d139.0104754112774!3d36.34155969330393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601e8d6dc8526ec7%3A0xe32fadcc9f5515a!2z44Oe44Oq44Ko44O844OrV0lMTOmrmOW0jg!5e0!3m2!1sja!2sjp!4v1766810530377!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+
+<script>
+  /* ===== タブ切り替え ===== */
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+
+  /* ===== 席次マップ：ズーム ===== */
+  let scale = 1;
+  const map = document.getElementById('hallMap');
+
+  function zoomIn() {
+    scale += 0.1;
+    map.style.transform = `scale(${scale})`;
+  }
+
+  function zoomOut() {
+    scale = Math.max(0.5, scale - 0.1);
+    map.style.transform = `scale(${scale})`;
+  }
+
+  function resetZoom() {
+    scale = 1;
+    map.style.transform = 'scale(1)';
+  }
+
+  /* ===== スマホ：ピンチズーム対応 ===== */
+
+  let initialDistance = null;
+  let initialScale = scale; // 既存の scale を使う
+
+  const container = document.getElementById('mapContainer');
+
+  container.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      initialDistance = getDistance(e.touches[0], e.touches[1]);
+      initialScale = scale;
+    }
+  }, { passive: false });
+
+  container.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && initialDistance) {
+      e.preventDefault(); // 画面ズーム防止
+
+      const currentDistance = getDistance(e.touches[0], e.touches[1]);
+      const zoomFactor = currentDistance / initialDistance;
+
+      scale = Math.min(Math.max(initialScale * zoomFactor, 0.5), 2.5);
+      map.style.transform = `scale(${scale})`;
+    }
+  }, { passive: false });
+
+  container.addEventListener('touchend', () => {
+    if (container.touches?.length < 2) {
+      initialDistance = null;
+    }
+  });
+
+  function getDistance(touch1, touch2) {
+    const dx = touch1.pageX - touch2.pageX;
+    const dy = touch1.pageY - touch2.pageY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+</script>
+
+</body>
+</html>
