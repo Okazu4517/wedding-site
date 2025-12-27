@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>私たちの結婚式</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width,
+           initial-scale=1,
+           minimum-scale=1,
+           maximum-scale=5,
+           user-scalable=yes">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+JP&display=swap" rel="stylesheet">
 
 <style>
@@ -78,7 +82,8 @@
 
   /* ===== 席次マップ ===== */
 
-  .map-container {
+  /* スクロール担当（外側） */
+  .map-scroll {
     width: 100%;
     height: 500px;
     overflow: auto;
@@ -86,8 +91,18 @@
     border-radius: 12px;
     background: #fdf7f4;
 
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .map-container {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #e0b0c7;
+    border-radius: 12px;
+    background: #fdf7f4;
+
     /* スマホ操作 */
-    touch-action: pan-x pan-y pinch-zoom;
+    touch-action: auto;
     -webkit-overflow-scrolling: touch;
   }
   
@@ -268,9 +283,8 @@
     <button onclick="zoomOut()">－ 縮小</button>
     <button onclick="resetZoom()">リセット</button>
   </div>
-
+<div class="map-scroll">
   <div class="map-container" id="mapContainer">
-    <!--<div class="hall-map" id="hallMap">-->
     <div class="map-wrapper">
       <div class="head-table">
         高砂<br>
@@ -428,7 +442,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <p class="note">※席次は変更となる場合がございます</p>
 </div>
 
