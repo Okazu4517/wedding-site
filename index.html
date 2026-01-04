@@ -82,7 +82,7 @@
 
   /* ===== 席次マップ ===== */
 
-  /* スクロール担当（外側） */
+  /* スクロール枠 */
   .map-scroll {
     width: 100%;
     height: 500px;
@@ -90,55 +90,47 @@
     border: 1px solid #e0b0c7;
     border-radius: 12px;
     background: #fdf7f4;
-
     -webkit-overflow-scrolling: touch;
   }
 
+  /* ズーム対象 */
   .map-container {
-    width: 100%;
-    height: 500px;
-    border: 1px solid #e0b0c7;
-    border-radius: 12px;
-    background: #fdf7f4;
-
-    /* スマホ操作 */
-    touch-action: auto;
-    -webkit-overflow-scrolling: touch;
+    width: max-content;
   }
-  
+
   /* 会場全体（1枚の地図） */
-.zoom-controls {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
+  .map-wrapper {
+    position: relative;
+    width: 1400px;
+    height: 1000px;
+    transform-origin: center center;
+    transition: transform 0.2s ease;
+  }
 
-.zoom-controls button {
-  padding: 6px 14px;
-  font-size: 16px;
-  border-radius: 20px;
-  border: 1px solid #d1c4e9;
-  background: #fff;
-  cursor: pointer;
-}
-
-/* ズーム対象 */
-.map-wrapper {
-  transform-origin: center center;
-  transition: transform 0.2s ease;
-}
-  
   /* 高砂 */
   .head-table {
     position: absolute;
-    top: 20px;
+    top: 40px;
     left: 50%;
     transform: translateX(-50%);
-    background: #fde2eb;
-    padding: 16px 30px;
-    border-radius: 30px;
+    background: linear-gradient(135deg, #fde2eb, #fff);
+    padding: 22px 44px;
+    border-radius: 40px;
+    text-align: center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    border: 2px solid #f2b5cc;
+  }
+
+  .head-label {
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: #a75b7b;
+  }
+
+  .head-names {
+    font-size: 20px;
     font-weight: bold;
+    margin-top: 6px;
   }
 
   .table {
@@ -147,7 +139,7 @@
     height: 260px;
     text-align: center;
     user-select: none;
-    pointer-events: none; /* 誤操作防止 */
+    pointer-events: none;
   }
 
   /* ===== テーブル配置（A〜J）===== */
@@ -235,7 +227,49 @@
   position: absolute;
   width: 260px;
   height: 260px;
+}
+
+.table::before {
+  content: "";
+  position: absolute;
+  inset: 40px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 2px #e7c6d5;
+}
+
+.table-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #a75b7b;
+  background: #fde2eb;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.seat {
+  position: absolute;
+  width: 80px;
   text-align: center;
+  font-size: 12px;
+}
+
+.s1 { top: 0; left: 90px; }
+.s2 { top: 30px; right: 0; }
+.s3 { top: 90px; right: -10px; }
+.s4 { bottom: 30px; right: 0; }
+.s5 { bottom: 0; left: 90px; }
+.s6 { bottom: 30px; left: 0; }
+.s7 { top: 90px; left: -10px; }
+.s8 { top: 30px; left: 0; }
+
+.seat,
+.table {
+  user-select: none;
+  pointer-events: none;
 }
 
 /* 中央の丸テーブル */
@@ -302,159 +336,114 @@
   <div class="map-container" id="mapContainer">
     <div class="map-wrapper">
       <div class="head-table">
-        高砂<br>
-        一就 & 美嵐
+        <div class="head-label">高砂</div>
+        <div class="head-names">一就 & 美嵐</div>
       </div>
 
-      <!-- テーブル A -->
-      <div class="table table-a">
-        <div class="round-table"><span class="table-label">A</span></div>
-        <ul class="guests">
-          <li style="--i:0">田中 太郎</li>
-          <li style="--i:1">佐藤 花子</li>
-          <li style="--i:2">鈴木 一郎</li>
-          <li style="--i:3">高橋 美咲</li>
-          <li style="--i:4">伊藤 健</li>
-          <li style="--i:5">山本 彩</li>
-          <li style="--i:6">中川 亮</li>
-          <li style="--i:7">松本 由紀</li>
-        </ul>
+      <!-- ===== テーブルA ===== -->
+      <div class="table" style="top: 220px; left: 150px;">
+        <div class="table-number">A</div>
+        <div class="seat s1">山田 太郎</div>
+        <div class="seat s2">佐藤 花子</div>
+        <div class="seat s3">鈴木 一郎</div>
+        <div class="seat s4">高橋 美咲</div>
+        <div class="seat s5">伊藤 健</div>
+        <div class="seat s6">渡辺 彩</div>
+        <div class="seat s7">小林 剛</div>
+        <div class="seat s8">加藤 優</div>
       </div>
 
-      <!-- テーブル B -->
-      <div class="table table-b">
-        <div class="round-table"><span class="table-label">B</span></div>
-        <ul class="guests">
-          <li style="--i:0">山田 太一</li>
-          <li style="--i:1">中村 美優</li>
-          <li style="--i:2">小林 健</li>
-          <li style="--i:3">加藤 さくら</li>
-          <li style="--i:4">岡本 翔</li>
-          <li style="--i:5">石田 明</li>
-          <li style="--i:6">藤田 直樹</li>
-          <li style="--i:7">森川 奈々</li>
-        </ul>
+      <!-- ===== テーブルB ===== -->
+      <div class="table" style="top: 220px; left: 500px;">
+        <div class="table-number">B</div>
+        <div class="seat s1">中村 恒一</div>
+        <div class="seat s2">山本 玲奈</div>
+        <div class="seat s3">森 大輔</div>
+        <div class="seat s4">阿部 由美</div>
+        <div class="seat s5">清水 翔</div>
+        <div class="seat s6">斎藤 真央</div>
+        <div class="seat s7">松本 恒一</div>
+        <div class="seat s8">岡田 美穂</div>
       </div>
 
-      <!-- テーブル C -->
-      <div class="table table-c">
-        <div class="round-table"><span class="table-label">C</span></div>
-        <ul class="guests">
-          <li style="--i:0">佐々木 誠</li>
-          <li style="--i:1">橋本 愛</li>
-          <li style="--i:2">長谷川 恒一</li>
-          <li style="--i:3">坂本 真</li>
-          <li style="--i:4">吉田 光</li>
-          <li style="--i:5">西村 遥</li>
-          <li style="--i:6">前田 俊</li>
-          <li style="--i:7">青木 香</li>
-        </ul>
+      <!-- ===== テーブルC ===== -->
+      <div class="table" style="top: 220px; left: 850px;">
+        <div class="table-number">C</div>
+        <div class="seat s1">福田 恒一</div>
+        <div class="seat s2">西村 佳奈</div>
+        <div class="seat s3">藤田 直樹</div>
+        <div class="seat s4">三浦 彩香</div>
+        <div class="seat s5">石川 健太</div>
+        <div class="seat s6">小川 里奈</div>
+        <div class="seat s7">前田 恒一</div>
+        <div class="seat s8">岡本 美月</div>
       </div>
 
-      <!-- テーブル D -->
-      <div class="table table-d">
-        <div class="round-table"><span class="table-label">D</span></div>
-        <ul class="guests">
-          <li style="--i:0">木村 拓哉</li>
-          <li style="--i:1">遠藤 恵</li>
-          <li style="--i:2">池田 裕</li>
-          <li style="--i:3">宮崎 玲奈</li>
-          <li style="--i:4">北村 隆</li>
-          <li style="--i:5">三浦 春</li>
-          <li style="--i:6">福田 修</li>
-          <li style="--i:7">金子 真央</li>
-        </ul>
+      <!-- ===== テーブルD ===== -->
+      <div class="table" style="top: 220px; left: 1200px;">
+        <div class="table-number">D</div>
+        <div class="seat s1">長谷川 陸</div>
+        <div class="seat s2">石井 由佳</div>
+        <div class="seat s3">村上 恒一</div>
+        <div class="seat s4">近藤 彩</div>
+        <div class="seat s5">金子 恒一</div>
+        <div class="seat s6">内田 真由</div>
+        <div class="seat s7">遠藤 健</div>
+        <div class="seat s8">青木 美奈</div>
       </div>
 
-      <!-- テーブル E -->
-      <div class="table table-e">
-        <div class="round-table"><span class="table-label">E</span></div>
-        <ul class="guests">
-          <li style="--i:0">川口 剛</li>
-          <li style="--i:1">岩崎 千尋</li>
-          <li style="--i:2">安藤 誠</li>
-          <li style="--i:3">小野 真理</li>
-          <li style="--i:4">本田 大輔</li>
-          <li style="--i:5">永井 優</li>
-          <li style="--i:6">久保 直人</li>
-          <li style="--i:7">野口 里奈</li>
-        </ul>
+      <!-- ===== テーブルE ===== -->
+      <div class="table" style="top: 600px; left: 150px;">
+        <div class="table-number">E</div>
+        <div class="seat s1">田中 恒一</div>
+        <div class="seat s2">安藤 彩</div>
+        <div class="seat s3">坂本 直人</div>
+        <div class="seat s4">宮崎 美咲</div>
+        <div class="seat s5">藤井 恒一</div>
+        <div class="seat s6">吉田 里穂</div>
+        <div class="seat s7">大野 健</div>
+        <div class="seat s8">川口 彩香</div>
       </div>
 
-      <!-- テーブル F -->
-      <div class="table table-f">
-        <div class="round-table"><span class="table-label">F</span></div>
-        <ul class="guests">
-          <li style="--i:0">原田 恒一</li>
-          <li style="--i:1">奥村 美咲</li>
-          <li style="--i:2">酒井 亮</li>
-          <li style="--i:3">須藤 彩</li>
-          <li style="--i:4">柴田 勇</li>
-          <li style="--i:5">平野 香</li>
-          <li style="--i:6">水野 恒一</li>
-          <li style="--i:7">竹内 結衣</li>
-        </ul>
+      <!-- ===== テーブルF ===== -->
+      <div class="table" style="top: 600px; left: 500px;">
+        <div class="table-number">F</div>
+        <div class="seat s1">小田 恒一</div>
+        <div class="seat s2">高田 美優</div>
+        <div class="seat s3">本田 健一</div>
+        <div class="seat s4">今井 彩</div>
+        <div class="seat s5">松田 恒一</div>
+        <div class="seat s6">原 里奈</div>
+        <div class="seat s7">黒田 剛</div>
+        <div class="seat s8">永井 美穂</div>
       </div>
 
-      <!-- テーブル G -->
-      <div class="table table-g">
-        <div class="round-table"><span class="table-label">G</span></div>
-        <ul class="guests">
-          <li style="--i:0">大野 智</li>
-          <li style="--i:1">松井 玲奈</li>
-          <li style="--i:2">堀内 健</li>
-          <li style="--i:3">高田 里穂</li>
-          <li style="--i:4">関口 亮</li>
-          <li style="--i:5">今井 彩</li>
-          <li style="--i:6">相原 誠</li>
-          <li style="--i:7">高野 奈央</li>
-        </ul>
+      <!-- ===== テーブルG ===== -->
+      <div class="table" style="top: 600px; left: 850px;">
+        <div class="table-number">G</div>
+        <div class="seat s1">平野 恒一</div>
+        <div class="seat s2">片山 彩</div>
+        <div class="seat s3">川崎 健</div>
+        <div class="seat s4">久保 美月</div>
+        <div class="seat s5">土屋 恒一</div>
+        <div class="seat s6">水野 彩香</div>
+        <div class="seat s7">菅原 剛</div>
+        <div class="seat s8">野口 美和</div>
       </div>
 
-      <!-- テーブル H -->
-      <div class="table table-h">
-        <div class="round-table"><span class="table-label">H</span></div>
-        <ul class="guests">
-          <li style="--i:0">片岡 剛</li>
-          <li style="--i:1">土屋 真由</li>
-          <li style="--i:2">吉川 誠</li>
-          <li style="--i:3">森田 彩</li>
-          <li style="--i:4">荒木 恒一</li>
-          <li style="--i:5">村上 奈々</li>
-          <li style="--i:6">谷口 修</li>
-          <li style="--i:7">杉本 香</li>
-        </ul>
+      <!-- ===== テーブルH ===== -->
+      <div class="table" style="top: 600px; left: 1200px;">
+        <div class="table-number">H</div>
+        <div class="seat s1">新井 恒一</div>
+        <div class="seat s2">桜井 美里</div>
+        <div class="seat s3">塚本 健太</div>
+        <div class="seat s4">小松 彩</div>
+        <div class="seat s5">堀内 恒一</div>
+        <div class="seat s6">須藤 美咲</div>
+        <div class="seat s7">関口 剛</div>
+        <div class="seat s8">森下 美帆</div>
       </div>
 
-      <!-- テーブル I -->
-      <div class="table table-i">
-        <div class="round-table"><span class="table-label">I</span></div>
-        <ul class="guests">
-          <li style="--i:0">河合 誠</li>
-          <li style="--i:1">星野 未来</li>
-          <li style="--i:2">長田 剛</li>
-          <li style="--i:3">宮下 美穂</li>
-          <li style="--i:4">新井 恒一</li>
-          <li style="--i:5">戸田 彩</li>
-          <li style="--i:6">川島 健</li>
-          <li style="--i:7">飯田 玲</li>
-        </ul>
-      </div>
-
-      <!-- テーブル J -->
-      <div class="table table-j">
-        <div class="round-table"><span class="table-label">J</span></div>
-        <ul class="guests">
-          <li style="--i:0">渡辺 恒一</li>
-          <li style="--i:1">吉岡 彩</li>
-          <li style="--i:2">浜田 修</li>
-          <li style="--i:3">岡田 真由</li>
-          <li style="--i:4">稲葉 剛</li>
-          <li style="--i:5">井上 美咲</li>
-          <li style="--i:6">秋山 健</li>
-          <li style="--i:7">小泉 玲奈</li>
-        </ul>
-      </div>
     </div>
   </div>
 </div>
