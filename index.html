@@ -37,6 +37,9 @@
 
     .tabs {
       display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       justify-content: center;
       background-color: #fff0f5;
       border-bottom: 2px solid #e0b0c7;
@@ -50,6 +53,15 @@
       font-size: 16px;
       font-weight: bold;
       color: #6a1b9a;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 480px) {
+      .tab {
+        font-size: 14px;
+        padding: 8px 10px;
+      }
     }
 
     .tab.active {
@@ -442,7 +454,7 @@
 
 
   <header>
-    <h1>Yuki & Aoi</h1>
+    <h1>Kazunari & Miran</h1>
     <p>2026年5月30日 @ マリエールウィル高崎</p>
   </header>
 
