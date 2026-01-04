@@ -325,7 +325,7 @@
   <div class="map-scroll">
     <div class="map-container" id="mapContainer">
       <div class="map-wrapper">
-        <div class="head-table">
+        <div class="head-table" id="headTable">
           <div class="head-label">高砂</div>
           <div class="head-names">一就 & 美嵐</div>
         </div>
@@ -522,7 +522,50 @@
     function zoomReset() {
       mapScale = 1;
       applyZoom();
+      centerHeadTable();
     }
+  </script>
+
+  <script>
+  /* ===== 初期表示：高砂を中央に ===== */
+
+  function centerHeadTable() {
+    const scrollArea = document.querySelector('.map-scroll');
+    const headTable = document.getElementById('headTable');
+
+    if (!scrollArea || !headTable) return;
+
+    const scrollRect = scrollArea.getBoundingClientRect();
+    const headRect = headTable.getBoundingClientRect();
+
+    const offsetLeft =
+      headTable.offsetLeft -
+      scrollRect.width / 2 +
+      headRect.width / 2;
+
+    const offsetTop =
+      headTable.offsetTop -
+      scrollRect.height / 2 +
+      headRect.height / 2;
+
+    scrollArea.scrollTo({
+      left: offsetLeft,
+      top: offsetTop,
+      behavior: 'instant'
+    });
+  }
+
+  /* ページ読み込み後 */
+  window.addEventListener('load', centerHeadTable);
+
+  /* 席次表タブを開いたときにも実行 */
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      if (tab.dataset.tab === 'seating') {
+        setTimeout(centerHeadTable, 50);
+      }
+    });
+  });
   </script>
 
   </body>
