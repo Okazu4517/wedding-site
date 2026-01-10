@@ -292,6 +292,53 @@
       font-weight: bold;
     }
 
+    /* ===== 入口表示 ===== */
+    .entrance {
+      position: absolute;
+      top: 500px;
+      left: 1520px;
+
+      padding: 18px 10px;
+      min-height: 40px;
+      background: #e8f4ff;
+      border: 2px solid #9cc7e8;
+      border-radius: 16px;
+
+      font-weight: bold;
+      font-size: 14px;
+      color: #1c4f7c;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      white-space: nowrap;
+      pointer-events: none; /* 触れない */
+      text-orientation: upright;
+      letter-spacing: 2px;
+      writing-mode: vertical-rl;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 下向き矢印（入口感UP・任意） */
+    .entrance::after {
+      display: block;
+      text-align: center;
+      margin-top: 4px;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .map-scroll {
+        padding: 12px; /* PCの40px → スマホ用 */
+      }
+    }
+    @media (max-width: 768px) {
+      .map-wrapper {
+        transform: scale(0.9);
+        transform-origin: top left;
+      }
+    }
+
   </style>
 </head>
 
@@ -359,9 +406,16 @@
     <div class="map-scroll">
       <div class="map-container" id="mapContainer">
         <div class="map-wrapper">
+
+          <!-- ===== 高砂 ===== -->
           <div class="head-table" id="headTable">
             <div class="head-label">高砂</div>
             <div class="head-names">一就 & 美嵐</div>
+          </div>
+
+          <!-- ===== 入口 ===== -->
+          <div class="entrance">
+            入 口
           </div>
 
           <!-- ===== テーブルA ===== -->
@@ -558,36 +612,36 @@
   });
   </script>
 
-<script>
-  /* ===== 名前検索機能 ===== */
-  const searchInput = document.getElementById("nameSearch");
-  const seats = document.querySelectorAll(".seat");
+  <script>
+    /* ===== 名前検索機能 ===== */
+    const searchInput = document.getElementById("nameSearch");
+    const seats = document.querySelectorAll(".seat");
 
-  searchInput.addEventListener("input", () => {
-    const keyword = searchInput.value.trim();
+    searchInput.addEventListener("input", () => {
+      const keyword = searchInput.value.trim();
 
-    seats.forEach(seat => {
-      seat.classList.remove("highlight");
+      seats.forEach(seat => {
+        seat.classList.remove("highlight");
+      });
+
+      if (!keyword) return;
+
+      seats.forEach(seat => {
+        const name = seat.textContent;
+
+        if (name.includes(keyword)) {
+          seat.classList.add("highlight");
+
+          /* 見つかった席を中央に */
+          seat.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "center"
+          });
+        }
+      });
     });
+  </script>
 
-    if (!keyword) return;
-
-    seats.forEach(seat => {
-      const name = seat.textContent;
-
-      if (name.includes(keyword)) {
-        seat.classList.add("highlight");
-
-        /* 見つかった席を中央に */
-        seat.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center"
-        });
-      }
-    });
-  });
-</script>
-
-  </body>
+</body>
 </html>
