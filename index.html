@@ -115,7 +115,7 @@
       position: relative;
       width: 1700px;
       height: 1100px;
-      transform-origin: center center;
+      transform-origin: top left;
       transition: transform 0.2s ease;
     }
 
@@ -641,6 +641,34 @@
         }
       });
     });
+  </script>
+
+  <script>
+  /* ===== 初期表示は全体表示（最大ズームアウト） ===== */
+  window.addEventListener("load", () => {
+    const scroll = document.querySelector(".map-scroll");
+    const map = document.querySelector(".map-wrapper");
+
+    if (!scroll || !map) return;
+
+    const scaleX = scroll.clientWidth / map.offsetWidth;
+    const scaleY = scroll.clientHeight / map.offsetHeight;
+
+    /* 画面に収まる最小倍率 */
+    const scale = Math.min(scaleX, scaleY, 1);
+
+    map.style.zoom = scale;
+
+    /* 中央に寄せる */
+    const offsetX = (map.offsetWidth * scale - scroll.clientWidth) / 2;
+    const offsetY = (map.offsetHeight * scale - scroll.clientHeight) / 2;
+
+    scroll.scrollTo({
+      left: offsetX > 0 ? offsetX : 0,
+      top: offsetY > 0 ? offsetY : 0,
+      behavior: "instant"
+    });
+  });
   </script>
 
 </body>
