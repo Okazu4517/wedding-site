@@ -281,6 +281,9 @@
 
     .search-box input {
       width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+      display: block;
       padding: 10px 12px;
       font-size: 16px;
       border-radius: 8px;
@@ -288,9 +291,23 @@
     }
 
     .seat.highlight {
-      background: #fde2eb;
-      border-radius: 6px;
+      background: #ffb3c7;
+      color: #7a003c;
       font-weight: bold;
+      border-radius: 999px;
+      padding: 4px 6px;
+      animation: pop 0.6s ease;
+    }
+
+    @keyframes pop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+
+    .table:has(.seat.highlight)::before {
+      border-color: #e91e63;
+      box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.25);
     }
 
     /* ===== 入口表示 ===== */
