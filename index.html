@@ -85,9 +85,30 @@
     }
 
     .tab-content {
-      padding: 40px 20px;
+      /* 1. 高さを取らないように非表示にする */
+      display: none; 
+      
+      /* 2. 横幅の設定（見切れの原因を解消） */
+      width: 100%;
       max-width: 900px;
-      margin: auto;
+      margin: 0 auto;
+      padding: 40px 20px;
+      box-sizing: border-box; /* パディングを横幅に含める */
+
+      /* 3. アニメーションの準備（横揺れを防ぐためtransformは控えめに） */
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      overflow-wrap: break-word; /* 長い単語などの折り返し設定 */
+    }
+
+    /* アクティブな時 */
+    .tab-content.active {
+      display: block;
+      opacity: 1;
+      pointer-events: auto;
+      /* translateYが原因でガタつく場合は、一旦外すか微調整します */
+      transform: none; 
     }
 
     h2 {
