@@ -21,7 +21,7 @@
 
     header {
       background: linear-gradient(to right, #fce4ec, #f8bbd0);
-      padding: 50px 20px;
+      padding: 24px 16px;
       text-align: center;
     }
 
@@ -70,14 +70,9 @@
     }
 
     .tab-content {
-      display: none;
       padding: 40px 20px;
       max-width: 900px;
       margin: auto;
-    }
-
-    .tab-content.active {
-      display: block;
     }
 
     h2 {
@@ -339,6 +334,80 @@
       }
     }
 
+    /* ===== スケジュール ===== */
+    .schedule-list {
+      list-style: none;
+      padding: 0;
+      margin: 24px 0;
+    }
+
+    .schedule-list li {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #f3b5c8;
+    }
+
+    .schedule-list li:last-child {
+      border-bottom: none;
+    }
+
+    .schedule-list .time {
+      min-width: 60px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #e91e63;
+    }
+
+    .schedule-list strong {
+      font-size: 16px;
+      color: #ad1457;
+    }
+
+    .schedule-list .place {
+      font-size: 14px;
+      color: #8e4a62;
+    }
+
+    @media (max-width: 480px) {
+      .schedule-list li {
+        gap: 12px;
+      }
+
+      .schedule-list .time {
+        font-size: 16px;
+      }
+
+      .schedule-list strong {
+        font-size: 15px;
+      }
+    }
+
+    /* ===== タブ切替アニメーション ===== */
+    .tab-contents {
+      position: relative;
+    }
+
+    .tab-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+
+      pointer-events: none;
+    }
+
+    .tab-content.active {
+      position: relative;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
   </style>
 </head>
 
@@ -355,177 +424,218 @@
     <button class="tab" data-tab="menu">メニュー</button>
     <button class="tab" data-tab="access">アクセス</button>
     <button class="tab" data-tab="seating">席次表</button>
+    <button class="tab" data-tab="schedule">スケジュール</div>
   </div>
 
-  <div id="greeting" class="tab-content active">
-    <h2>ご挨拶</h2>
-    <p>
-      本日は私たちの結婚式にご列席いただき、誠にありがとうございます。<br>
-      大切な皆さまと特別な一日を過ごせることを、心より嬉しく思っております。
-    </p>
-  </div>
-
-  <div id="menu" class="tab-content">
-    <h2>お料理メニュー</h2>
-    <ul>
-      <li>前菜：季節の彩りサラダ</li>
-      <li>スープ：コンソメスープ</li>
-      <li>魚料理：真鯛のポワレ</li>
-      <li>肉料理：国産牛フィレ肉のロースト</li>
-      <li>デザート：ウェディングケーキ＆フルーツ</li>
-    </ul>
-    <p class="note">※内容は変更となる場合がございます</p>
-  </div>
-
-  <div id="access" class="tab-content">
-    <h2>式場へのアクセス</h2>
-    <p><strong>マリエールウィル高崎</strong></p>
-    <p>〒370-0069 群馬県高崎市飯塚町1361</p>
-    <p>JR高崎問屋町駅 徒歩約10分</p>
-    <p>駐車場：無料（300台）</p>
-
-  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6427.586553130519!2d139.0104754112774!3d36.34155969330393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601e8d6dc8526ec7%3A0xe32fadcc9f5515a!2z44Oe44Oq44Ko44O844OrV0lMTOmrmOW0jg!5e0!3m2!1sja!2sjp!4v1766810530377!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-  </div>
-
-  <div id="seating" class="tab-content">
-    <h2>席次表</h2>
-
-    <div class="search-box">
-      <input
-        type="text"
-        id="nameSearch"
-        placeholder="お名前を入力してください"
-      />
+  <div class="tab-contents">
+    <div id="greeting" class="tab-content active">
+      <h2>ご挨拶</h2>
+      <p>
+        本日は私たちの結婚式にご列席いただき、誠にありがとうございます。<br>
+        大切な皆さまと特別な一日を過ごせることを、心より嬉しく思っております。
+      </p>
     </div>
 
-    <div class="zoom-controls">
-      <button type="button" onclick="zoomIn()">＋</button>
-      <button type="button" onclick="zoomOut()">－</button>
-      <button type="button" onclick="zoomReset()">リセット</button>
+    <div id="menu" class="tab-content">
+      <h2>お料理メニュー</h2>
+      <ul>
+        <li>前菜：季節の彩りサラダ</li>
+        <li>スープ：コンソメスープ</li>
+        <li>魚料理：真鯛のポワレ</li>
+        <li>肉料理：国産牛フィレ肉のロースト</li>
+        <li>デザート：ウェディングケーキ＆フルーツ</li>
+      </ul>
+      <p class="note">※内容は変更となる場合がございます</p>
     </div>
-    <div class="map-scroll">
-      <div class="map-container" id="mapContainer">
-        <div class="map-wrapper">
 
-          <!-- ===== 高砂 ===== -->
-          <div class="head-table" id="headTable">
-            <div class="head-label">高砂</div>
-            <div class="head-names">一就 & 美嵐</div>
+    <div id="access" class="tab-content">
+      <h2>式場へのアクセス</h2>
+      <p><strong>マリエールウィル高崎</strong></p>
+      <p>〒370-0069 群馬県高崎市飯塚町1361</p>
+      <p>JR高崎問屋町駅 徒歩約10分</p>
+      <p>駐車場：無料（300台）</p>
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6427.586553130519!2d139.0104754112774!3d36.34155969330393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601e8d6dc8526ec7%3A0xe32fadcc9f5515a!2z44Oe44Oq44Ko44O844OrV0lMTOmrmOW0jg!5e0!3m2!1sja!2sjp!4v1766810530377!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <div id="seating" class="tab-content">
+      <h2>席次表</h2>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="nameSearch"
+          placeholder="お名前を入力してください"
+        />
+      </div>
+
+      <div class="zoom-controls">
+        <button type="button" onclick="zoomIn()">＋</button>
+        <button type="button" onclick="zoomOut()">－</button>
+        <button type="button" onclick="zoomReset()">リセット</button>
+      </div>
+      <div class="map-scroll">
+        <div class="map-container" id="mapContainer">
+          <div class="map-wrapper">
+
+            <!-- ===== 高砂 ===== -->
+            <div class="head-table" id="headTable">
+              <div class="head-label">高砂</div>
+              <div class="head-names">一就 & 美嵐</div>
+            </div>
+
+            <!-- ===== 入口 ===== -->
+            <div class="entrance">
+              入 口
+            </div>
+
+            <!-- ===== テーブルA ===== -->
+            <div class="table" style="top: 220px; left: 150px;">
+              <div class="table-number">A</div>
+              <div class="seat" data-index="0">山田 太郎</div>
+              <div class="seat" data-index="1">佐藤 花子</div>
+              <div class="seat" data-index="2">鈴木 一郎</div>
+              <div class="seat" data-index="3">高橋 美咲</div>
+              <div class="seat" data-index="4">伊藤 健</div>
+              <div class="seat" data-index="5">渡辺 彩</div>
+              <div class="seat" data-index="6">小林 剛</div>
+              <div class="seat" data-index="7">加藤 優</div>
+            </div>
+
+            <!-- ===== テーブルB ===== -->
+            <div class="table" style="top: 220px; left: 500px;">
+              <div class="table-number">B</div>
+              <div class="seat" data-index="0">中村 恒一</div>
+              <div class="seat" data-index="1">山本 玲奈</div>
+              <div class="seat" data-index="2">森 大輔</div>
+              <div class="seat" data-index="3">阿部 由美</div>
+              <div class="seat" data-index="4">清水 翔</div>
+              <div class="seat" data-index="5">斎藤 真央</div>
+              <div class="seat" data-index="6">松本 恒一</div>
+              <div class="seat" data-index="7">岡田 美穂</div>
+            </div>
+
+            <!-- ===== テーブルC ===== -->
+            <div class="table" style="top: 220px; left: 850px;">
+              <div class="table-number">C</div>
+              <div class="seat" data-index="0">福田 恒一</div>
+              <div class="seat" data-index="1">西村 佳奈</div>
+              <div class="seat" data-index="2">藤田 直樹</div>
+              <div class="seat" data-index="3">三浦 彩香</div>
+              <div class="seat" data-index="4">石川 健太</div>
+              <div class="seat" data-index="5">小川 里奈</div>
+              <div class="seat" data-index="6">前田 恒一</div>
+              <div class="seat" data-index="7">岡本 美月</div>
+            </div>
+
+            <!-- ===== テーブルD ===== -->
+            <div class="table" style="top: 220px; left: 1200px;">
+              <div class="table-number">D</div>
+              <div class="seat" data-index="0">長谷川 陸</div>
+              <div class="seat" data-index="1">石井 由佳</div>
+              <div class="seat" data-index="2">村上 恒一</div>
+              <div class="seat" data-index="3">近藤 彩</div>
+              <div class="seat" data-index="4">金子 恒一</div>
+              <div class="seat" data-index="5">内田 真由</div>
+              <div class="seat" data-index="6">遠藤 健</div>
+              <div class="seat" data-index="7">青木 美奈</div>
+            </div>
+
+            <!-- ===== テーブルE ===== -->
+            <div class="table" style="top: 600px; left: 150px;">
+              <div class="table-number">E</div>
+              <div class="seat" data-index="0">田中 恒一</div>
+              <div class="seat" data-index="1">安藤 彩</div>
+              <div class="seat" data-index="2">坂本 直人</div>
+              <div class="seat" data-index="3">宮崎 美咲</div>
+              <div class="seat" data-index="4">藤井 恒一</div>
+              <div class="seat" data-index="5">吉田 里穂</div>
+              <div class="seat" data-index="6">大野 健</div>
+              <div class="seat" data-index="7">川口 彩香</div>
+            </div>
+
+            <!-- ===== テーブルF ===== -->
+            <div class="table" style="top: 600px; left: 500px;">
+              <div class="table-number">F</div>
+              <div class="seat" data-index="0">小田 恒一</div>
+              <div class="seat" data-index="1">高田 美優</div>
+              <div class="seat" data-index="2">本田 健一</div>
+              <div class="seat" data-index="3">今井 彩</div>
+              <div class="seat" data-index="4">松田 恒一</div>
+              <div class="seat" data-index="5">原 里奈</div>
+              <div class="seat" data-index="6">黒田 剛</div>
+              <div class="seat" data-index="7">永井 美穂</div>
+            </div>
+
+            <!-- ===== テーブルG ===== -->
+            <div class="table" style="top: 600px; left: 850px;">
+              <div class="table-number">G</div>
+              <div class="seat" data-index="0">平野 恒一</div>
+              <div class="seat" data-index="1">片山 彩</div>
+              <div class="seat" data-index="2">川崎 健</div>
+              <div class="seat" data-index="3">久保 美月</div>
+              <div class="seat" data-index="4">土屋 恒一</div>
+              <div class="seat" data-index="5">水野 彩香</div>
+              <div class="seat" data-index="6">菅原 剛</div>
+              <div class="seat" data-index="7">野口 美和</div>
+            </div>
+
+            <!-- ===== テーブルH ===== -->
+            <div class="table" style="top: 600px; left: 1200px;">
+              <div class="table-number">H</div>
+              <div class="seat" data-index="0">新井 恒一</div>
+              <div class="seat" data-index="1">桜井 美里</div>
+              <div class="seat" data-index="2">塚本 健太</div>
+              <div class="seat" data-index="3">小松 彩</div>
+              <div class="seat" data-index="4">堀内 恒一</div>
+              <div class="seat" data-index="5">須藤 美咲</div>
+              <div class="seat" data-index="6">関口 剛</div>
+              <div class="seat" data-index="7">森下 美帆</div>
+            </div>
+
           </div>
-
-          <!-- ===== 入口 ===== -->
-          <div class="entrance">
-            入 口
-          </div>
-
-          <!-- ===== テーブルA ===== -->
-          <div class="table" style="top: 220px; left: 150px;">
-            <div class="table-number">A</div>
-            <div class="seat" data-index="0">山田 太郎</div>
-            <div class="seat" data-index="1">佐藤 花子</div>
-            <div class="seat" data-index="2">鈴木 一郎</div>
-            <div class="seat" data-index="3">高橋 美咲</div>
-            <div class="seat" data-index="4">伊藤 健</div>
-            <div class="seat" data-index="5">渡辺 彩</div>
-            <div class="seat" data-index="6">小林 剛</div>
-            <div class="seat" data-index="7">加藤 優</div>
-          </div>
-
-          <!-- ===== テーブルB ===== -->
-          <div class="table" style="top: 220px; left: 500px;">
-            <div class="table-number">B</div>
-            <div class="seat" data-index="0">中村 恒一</div>
-            <div class="seat" data-index="1">山本 玲奈</div>
-            <div class="seat" data-index="2">森 大輔</div>
-            <div class="seat" data-index="3">阿部 由美</div>
-            <div class="seat" data-index="4">清水 翔</div>
-            <div class="seat" data-index="5">斎藤 真央</div>
-            <div class="seat" data-index="6">松本 恒一</div>
-            <div class="seat" data-index="7">岡田 美穂</div>
-          </div>
-
-          <!-- ===== テーブルC ===== -->
-          <div class="table" style="top: 220px; left: 850px;">
-            <div class="table-number">C</div>
-            <div class="seat" data-index="0">福田 恒一</div>
-            <div class="seat" data-index="1">西村 佳奈</div>
-            <div class="seat" data-index="2">藤田 直樹</div>
-            <div class="seat" data-index="3">三浦 彩香</div>
-            <div class="seat" data-index="4">石川 健太</div>
-            <div class="seat" data-index="5">小川 里奈</div>
-            <div class="seat" data-index="6">前田 恒一</div>
-            <div class="seat" data-index="7">岡本 美月</div>
-          </div>
-
-          <!-- ===== テーブルD ===== -->
-          <div class="table" style="top: 220px; left: 1200px;">
-            <div class="table-number">D</div>
-            <div class="seat" data-index="0">長谷川 陸</div>
-            <div class="seat" data-index="1">石井 由佳</div>
-            <div class="seat" data-index="2">村上 恒一</div>
-            <div class="seat" data-index="3">近藤 彩</div>
-            <div class="seat" data-index="4">金子 恒一</div>
-            <div class="seat" data-index="5">内田 真由</div>
-            <div class="seat" data-index="6">遠藤 健</div>
-            <div class="seat" data-index="7">青木 美奈</div>
-          </div>
-
-          <!-- ===== テーブルE ===== -->
-          <div class="table" style="top: 600px; left: 150px;">
-            <div class="table-number">E</div>
-            <div class="seat" data-index="0">田中 恒一</div>
-            <div class="seat" data-index="1">安藤 彩</div>
-            <div class="seat" data-index="2">坂本 直人</div>
-            <div class="seat" data-index="3">宮崎 美咲</div>
-            <div class="seat" data-index="4">藤井 恒一</div>
-            <div class="seat" data-index="5">吉田 里穂</div>
-            <div class="seat" data-index="6">大野 健</div>
-            <div class="seat" data-index="7">川口 彩香</div>
-          </div>
-
-          <!-- ===== テーブルF ===== -->
-          <div class="table" style="top: 600px; left: 500px;">
-            <div class="table-number">F</div>
-            <div class="seat" data-index="0">小田 恒一</div>
-            <div class="seat" data-index="1">高田 美優</div>
-            <div class="seat" data-index="2">本田 健一</div>
-            <div class="seat" data-index="3">今井 彩</div>
-            <div class="seat" data-index="4">松田 恒一</div>
-            <div class="seat" data-index="5">原 里奈</div>
-            <div class="seat" data-index="6">黒田 剛</div>
-            <div class="seat" data-index="7">永井 美穂</div>
-          </div>
-
-          <!-- ===== テーブルG ===== -->
-          <div class="table" style="top: 600px; left: 850px;">
-            <div class="table-number">G</div>
-            <div class="seat" data-index="0">平野 恒一</div>
-            <div class="seat" data-index="1">片山 彩</div>
-            <div class="seat" data-index="2">川崎 健</div>
-            <div class="seat" data-index="3">久保 美月</div>
-            <div class="seat" data-index="4">土屋 恒一</div>
-            <div class="seat" data-index="5">水野 彩香</div>
-            <div class="seat" data-index="6">菅原 剛</div>
-            <div class="seat" data-index="7">野口 美和</div>
-          </div>
-
-          <!-- ===== テーブルH ===== -->
-          <div class="table" style="top: 600px; left: 1200px;">
-            <div class="table-number">H</div>
-            <div class="seat" data-index="0">新井 恒一</div>
-            <div class="seat" data-index="1">桜井 美里</div>
-            <div class="seat" data-index="2">塚本 健太</div>
-            <div class="seat" data-index="3">小松 彩</div>
-            <div class="seat" data-index="4">堀内 恒一</div>
-            <div class="seat" data-index="5">須藤 美咲</div>
-            <div class="seat" data-index="6">関口 剛</div>
-            <div class="seat" data-index="7">森下 美帆</div>
-          </div>
-
         </div>
       </div>
+      <p class="note">※席次は変更となる場合がございます</p>
     </div>
-    <p class="note">※席次は変更となる場合がございます</p>
+
+    <div id="schedule" class="tab-content">
+      <h2>当日のスケジュール</h2>
+
+      <ul class="schedule-list">
+        <li>
+          <span class="time">11:00</span>
+          <div>
+            <strong>ウェルカムパーティー</strong><br>
+            <span class="place">（1Fロビーにて）</span>
+          </div>
+        </li>
+
+        <li>
+          <span class="time">12:00</span>
+          <div>
+            <strong>挙式</strong><br>
+            <span class="place">（大聖堂にて）</span>
+          </div>
+        </li>
+
+        <li>
+          <span class="time">12:30</span>
+          <div>
+            <strong>ウェルカムパーティー</strong><br>
+            <span class="place">（テラスにて）</span>
+          </div>
+        </li>
+
+        <li>
+          <span class="time">13:30</span>
+          <div>
+            <strong>披露宴</strong><br>
+            <span class="place">（披露宴会場にて）</span>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <script>
@@ -540,6 +650,10 @@
         contents.forEach(c => c.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(target).classList.add('active');
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
       });
     });
   </script>
