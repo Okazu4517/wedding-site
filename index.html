@@ -116,6 +116,18 @@
       border: 0;
     }
 
+    /* ===== アクセス（Googleマップ用 全幅化） ===== */
+    .tab-content.fullwidth {
+      max-width: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .tab-content.fullwidth > * {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
     /* ===== 席次マップ ===== */
     /* スクロール枠 */
     .map-scroll {
@@ -493,7 +505,7 @@
       <p class="note">※内容は変更となる場合がございます</p>
     </div>
 
-    <div id="access" class="tab-content">
+    <div id="access" class="tab-content fullwidth">
       <h2>式場へのアクセス</h2>
       <p><strong>マリエールウィル高崎</strong></p>
       <p>〒370-0069 群馬県高崎市飯塚町1361</p>
