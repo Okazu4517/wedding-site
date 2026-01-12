@@ -16,6 +16,10 @@
       overflow-x: hidden;
     }
 
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: 'Noto Serif JP', serif;
@@ -99,41 +103,39 @@
     }
     
     /* ===== アクセス ===== */
+    .tab-content.fullwidth {
+      width: 100%;
+      max-width: 100%;
+      padding: 24px 16px;
+      box-sizing: border-box; 
+      overflow-x: hidden;
+    }
+
     .map-iframe {
       position: relative;
       width: 100%;
-      padding-top: 56.25%; /* PC */
+      /* アスペクト比を維持 */
+      padding-top: 56.25%; 
       overflow: hidden;
       border-radius: 12px;
     }
 
     .map-iframe iframe {
       position: absolute;
-      inset: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: 0;
     }
 
-    /* スマホだけ縦長 */
-    @media (max-width: 768px) {
-      .map-iframe {
-        padding-top: 85%;
-      }
-    }
-
-    .tab-content.fullwidth {
-      position: relative;
-      max-width: 100%;
-      width: 100%;
-      padding: 24px 16px;
-      box-sizing: border-box;
-    }
-
     @media (max-width: 768px) {
       .tab-content.fullwidth {
-        padding-left: 12px;
-        padding-right: 12px;
+        padding: 20px 12px;
+      }
+      .map-iframe {
+        /* スマホでは地図を少し縦長に */
+        padding-top: 100%; 
       }
     }
 
