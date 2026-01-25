@@ -3,60 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <title>私たちの結婚式</title>
-  <meta name="viewport" content="width=device-width,
-           initial-scale=1,
-           minimum-scale=1,
-           maximum-scale=5,
-           user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes">
+  
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+JP&display=swap" rel="stylesheet">
 
   <style>
-
-    html, body {
-      overflow-x: hidden;
-    }
-
+    /* =============================================
+       1. 基本設定（Reset & Base）
+       ============================================= */
     *, *::before, *::after {
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
       margin: 0;
-      font-family: 'Noto Serif JP', serif;
+      padding: 0;
+      overflow-x: hidden;
       background: #fffaf8;
       color: #4b2e2e;
+      font-family: 'Noto Serif JP', serif;
       line-height: 1.8;
     }
 
+    /* =============================================
+       2. レイアウトパーツ
+       ============================================= */
     header {
       background: linear-gradient(to right, #fce4ec, #f8bbd0);
       padding: 24px 16px;
       text-align: center;
     }
-    
-    @media (max-width: 480px) {
-      header {
-        padding: 10px 12px;
-      }
-    }
 
     header h1 {
       font-family: 'Great Vibes', cursive;
       font-size: 52px;
-      margin-bottom: 10px;
+      margin: 0 0 10px 0;
     }
 
     header p {
       font-size: 18px;
+      margin: 0;
     }
 
+    /* タブナビゲーション */
     .tabs {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       display: flex;
       flex-wrap: nowrap;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       justify-content: center;
-      background-color: #fff0f5;
+      background-color: #fffaf7;
       border-bottom: 2px solid #e0b0c7;
     }
 
@@ -72,45 +71,45 @@
       flex-shrink: 0;
     }
 
-    @media (max-width: 480px) {
-      .tab {
-        font-size: 14px;
-        padding: 8px 10px;
-      }
-    }
-
     .tab.active {
       border-bottom: 3px solid #ba68c8;
       background-color: #fff;
     }
 
+    /* コンテンツエリア */
+    .tab-contents {
+      position: relative;
+      width: 100%;
+    }
+
     .tab-content {
-      /* 1. 高さを取らないように非表示にする */
-      display: none; 
-      
-      /* 2. 横幅の設定（見切れの原因を解消） */
+      display: none;
       width: 100%;
       max-width: 900px;
       margin: 0 auto;
-      padding: 40px 20px;
-      box-sizing: border-box; /* パディングを横幅に含める */
-
-      /* 3. アニメーションの準備（横揺れを防ぐためtransformは控えめに） */
+      padding: 20px 20px 40px;
       opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-      overflow-wrap: break-word; /* 長い単語などの折り返し設定 */
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      overflow-wrap: break-word;
     }
 
-    /* アクティブな時 */
     .tab-content.active {
       display: block;
       opacity: 1;
-      pointer-events: auto;
-      /* translateYが原因でガタつく場合は、一旦外すか微調整します */
-      transform: none; 
+      transform: translateY(0);
     }
 
+    /* アクセス等、コンテンツの横幅を調整（見切れ防止） */
+    .tab-content.fullwidth {
+      max-width: 100%;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    /* =============================================
+       3. 各セクション詳細
+       ============================================= */
     h2 {
       border-bottom: 2px solid #e1bee7;
       padding-bottom: 10px;
@@ -121,66 +120,78 @@
     .note {
       font-size: 14px;
       color: #888;
-    }
-    
-    /* ===== アクセス ===== */
-    .tab-content.fullwidth {
-      width: 100%;
-      max-width: 100%;
-      padding: 24px 16px;
-      box-sizing: border-box; 
-      overflow-x: hidden;
+      margin-top: 10px;
     }
 
+    /* スケジュール */
+    .schedule-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .schedule-list li {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #f3b5c8;
+    }
+
+    .schedule-list .time {
+      min-width: 60px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #e91e63;
+    }
+
+    /* アクセス（Map）修正：親要素の幅を超えないように設定 */
     .map-iframe {
       position: relative;
       width: 100%;
-      /* アスペクト比を維持 */
-      padding-top: 56.25%; 
-      overflow: hidden;
+      max-width: 100%; /* 横幅が見切れないように固定 */
+      padding-top: 56.25%; /* 16:9比率 */
+      margin-top: 15px;
       border-radius: 12px;
+      overflow: hidden;
     }
 
     .map-iframe iframe {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       border: 0;
     }
 
-    @media (max-width: 768px) {
-      .tab-content.fullwidth {
-        padding: 20px 12px;
-      }
-      .map-iframe {
-        /* スマホでは地図を少し縦長に */
-        padding-top: 100%; 
-      }
+    /* 席次表（Map Container） */
+    .search-box {
+      position: sticky;
+      top: 48px;
+      background: #fffaf7;
+      padding: 10px;
+      z-index: 900;
+      text-align: center;
     }
 
-    /* ===== 席次マップ ===== */
-    /* スクロール枠 */
+    .search-box input {
+      width: 100%;
+      max-width: 320px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e0cbd6;
+    }
+
     .map-scroll {
       width: 100%;
       height: 500px;
       overflow: auto;
       border: 1px solid #e0b0c7;
-      border-radius: 12px;
       background: #fdf7f4;
+      border-radius: 12px;
       -webkit-overflow-scrolling: touch;
     }
 
-    /* ズーム対象 */
-    .map-container {
-      width: max-content;
-    }
-
-    /* 会場全体（1枚の地図） */
     .map-wrapper {
       position: relative;
-      width: 1700px;
+      width: 1700px; /* 元のサイズを維持 */
       height: 1100px;
       transform-origin: top left;
       transition: transform 0.2s ease;
@@ -200,112 +211,28 @@
       border: 2px solid #f2b5cc;
     }
 
-    .head-label {
-      font-size: 14px;
-      letter-spacing: 0.1em;
-      color: #a75b7b;
-    }
+    .head-label { font-size: 14px; color: #a75b7b; }
+    .head-names { font-size: 20px; font-weight: bold; margin-top: 6px; }
 
-    .head-names {
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 6px;
-    }
-
-    .table {
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      border-radius: 20px;
-      user-select: none;
-    }
-
-    /* ===== テーブル配置（A〜J）===== */
-
-    /* 上段 */
-    .table-a { top: 180px; left: 200px; }
-    .table-b { top: 180px; left: 520px; }
-    .table-c { top: 180px; left: 840px; }
-
-    /* 中段 */
-    .table-d { top: 460px; left: 200px; }
-    .table-e { top: 460px; left: 520px; }
-    .table-f { top: 460px; left: 840px; }
-
-    /* 下段 */
-    .table-g { top: 740px; left: 200px; }
-    .table-h { top: 740px; left: 520px; }
-    .table-i { top: 740px; left: 840px; }
-
-    /* 右端（やや離して1卓） */
-    .table-j { top: 460px; left: 1160px; }
-
-    /* ===== 席次マップ拡張 ===== */
-
-    .controls {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .controls button {
-      margin: 0 6px;
-      padding: 6px 14px;
-      font-size: 14px;
-      border-radius: 20px;
-      border: 1px solid #d1c4e9;
-      background: #fff;
-      cursor: pointer;
-    }
-
-    .head-table {
-      position: absolute;
-      top: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fde2eb;
-      padding: 18px 36px;
-      border-radius: 30px;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
-    .table strong {
-      display: block;
-      margin-bottom: 6px;
-      color: #6a1b9a;
-    }
-
-    /* ===== 円卓スタイル ===== */
-
+    /* 円卓・席 */
+    .table { position: absolute; width: 260px; height: 260px; }
     .table::before {
       content: "";
-      position: absolute;
-      inset: 40px;
-      border-radius: 50%;
-      border: 2px solid #e7c6d5;
+      position: absolute; inset: 40px;
+      border-radius: 50%; border: 2px solid #e7c6d5;
     }
-
     .table-number {
-      position: absolute;
-      top: 50%;
-      left: 50%;
+      position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      background: #fde2eb;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: bold;
+      background: #fde2eb; padding: 6px 12px;
+      border-radius: 20px; font-weight: bold;
     }
-
     .seat {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 80px;
-      text-align: center;
-      font-size: 12px;
-      white-space: nowrap;
+      position: absolute; top: 50%; left: 50%; width: 80px;
+      text-align: center; font-size: 12px; white-space: nowrap;
     }
-
+    
+    /* 席の配置角度設定 */
     .seat[data-index="0"] { transform: translate(-50%, -50%) rotate(0deg)   translate(0, -120px); }
     .seat[data-index="1"] { transform: translate(-50%, -50%) rotate(45deg)  translate(0, -120px); }
     .seat[data-index="2"] { transform: translate(-50%, -50%) rotate(90deg)  translate(0, -120px); }
@@ -314,47 +241,6 @@
     .seat[data-index="5"] { transform: translate(-50%, -50%) rotate(225deg) translate(0, -120px); }
     .seat[data-index="6"] { transform: translate(-50%, -50%) rotate(270deg) translate(0, -120px); }
     .seat[data-index="7"] { transform: translate(-50%, -50%) rotate(315deg) translate(0, -120px); }
-
-    .seat,
-    .table {
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .table-label {
-      font-size: 18px;
-    }
-    
-    .tabs {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: #fffaf7;
-    }
-
-    .tab-content {
-      padding-top: 12px;
-    }
-
-    /* ===== 名前検索 ===== */
-    .search-box {
-      position: sticky;
-      top: 48px; /* タブバーの下 */
-      background: #fffaf7;
-      padding: 10px;
-      z-index: 900;
-    }
-
-    .search-box input {
-      width: 100%;
-      max-width: 320px;
-      margin: 0 auto;
-      display: block;
-      padding: 10px 12px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #e0cbd6;
-    }
 
     .seat.highlight {
       background: #ffb3c7;
@@ -365,153 +251,31 @@
       animation: pop 0.6s ease;
     }
 
+    /* 入口 */
+    .entrance {
+      position: absolute; top: 500px; left: 1520px;
+      padding: 18px 10px; background: #e8f4ff;
+      border: 2px solid #9cc7e8; border-radius: 16px;
+      font-weight: bold; writing-mode: vertical-rl;
+    }
+
     @keyframes pop {
-      0%   { transform: scale(1); }
-      40%  { transform: scale(1.25); }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
       100% { transform: scale(1); }
     }
 
-    .table:has(.seat.highlight)::before {
-      border-color: #e91e63;
-      box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.25);
-    }
-
-    /* ===== 入口表示 ===== */
-    .entrance {
-      position: absolute;
-      top: 500px;
-      left: 1520px;
-
-      padding: 18px 10px;
-      min-height: 40px;
-      background: #e8f4ff;
-      border: 2px solid #9cc7e8;
-      border-radius: 16px;
-
-      font-weight: bold;
-      font-size: 14px;
-      color: #1c4f7c;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      white-space: nowrap;
-      pointer-events: none; /* 触れない */
-      text-orientation: upright;
-      letter-spacing: 2px;
-      writing-mode: vertical-rl;
-      
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* 下向き矢印（入口感UP・任意） */
-    .entrance::after {
-      display: block;
-      text-align: center;
-      margin-top: 4px;
-      font-size: 16px;
-    }
-
+    /* =============================================
+       4. レスポンシブ
+       ============================================= */
     @media (max-width: 768px) {
-      .map-scroll {
-        padding: 8px;
-      }
+      header h1 { font-size: 38px; }
+      .tab { padding: 10px 12px; font-size: 14px; }
+      .map-iframe { padding-top: 100%; }
     }
-    @media (max-width: 768px) {
-      .map-wrapper {
-        width: 1200px;
-        height: 900px;
-      }
-    }
-
-    /* ===== スケジュール ===== */
-    .schedule-list {
-      list-style: none;
-      padding: 0;
-      margin: 24px 0;
-    }
-
-    .schedule-list li {
-      display: flex;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid #f3b5c8;
-    }
-
-    .schedule-list li:last-child {
-      border-bottom: none;
-    }
-
-    .schedule-list .time {
-      min-width: 60px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #e91e63;
-    }
-
-    .schedule-list strong {
-      font-size: 16px;
-      color: #ad1457;
-    }
-
-    .schedule-list .place {
-      font-size: 14px;
-      color: #8e4a62;
-    }
-
-    @media (max-width: 480px) {
-      .schedule-list li {
-        gap: 12px;
-      }
-
-      .schedule-list .time {
-        font-size: 16px;
-      }
-
-      .schedule-list strong {
-        font-size: 15px;
-      }
-    }
-
-    /* ===== タブ切替アニメーション ===== */
-    .tab-contents {
-      position: relative;
-    }
-
-    .tab-content {
-      position: relative;
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      display: none;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-
-      pointer-events: none;
-    }
-
-    .tab-content.active {
-      display: block;
-      position: relative;
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .tabs {
-      margin-bottom: 0;
-    }
-
-    .tab-contents {
-      margin-top: 0;
-      padding-top: 0;
-      min-height: auto;
-    }
-
   </style>
 </head>
 
-<!-- =============== ここからHTML本文 =============== -->
 <body>
 
   <header>
@@ -519,24 +283,24 @@
     <p>2026年5月30日 @ マリエールウィル高崎</p>
   </header>
 
-  <div class="tabs">
+  <nav class="tabs">
     <button class="tab active" data-tab="greeting">ご挨拶</button>
     <button class="tab" data-tab="menu">メニュー</button>
     <button class="tab" data-tab="access">アクセス</button>
     <button class="tab" data-tab="seating">席次表</button>
     <button class="tab" data-tab="schedule">スケジュール</button>
-  </div>
+  </nav>
 
-  <div class="tab-contents">
-    <div id="greeting" class="tab-content active">
+  <main class="tab-contents">
+    <section id="greeting" class="tab-content active">
       <h2>ご挨拶</h2>
       <p>
         本日は私たちの結婚式にご列席いただき、誠にありがとうございます。<br>
         大切な皆さまと特別な一日を過ごせることを、心より嬉しく思っております。
       </p>
-    </div>
+    </section>
 
-    <div id="menu" class="tab-content">
+    <section id="menu" class="tab-content">
       <h2>お料理メニュー</h2>
       <ul>
         <li>前菜：季節の彩りサラダ</li>
@@ -546,212 +310,75 @@
         <li>デザート：ウェディングケーキ＆フルーツ</li>
       </ul>
       <p class="note">※内容は変更となる場合がございます</p>
-    </div>
+    </section>
 
-    <div id="access" class="tab-content fullwidth">
+    <section id="access" class="tab-content fullwidth">
       <h2>式場へのアクセス</h2>
-      <p><strong>マリエールウィル高崎</strong></p>
-      <p>〒370-0069 群馬県高崎市飯塚町1361</p>
-      <p>JR高崎問屋町駅 徒歩約10分</p>
-      <p>駐車場：無料（300台）</p>
+      <p><strong>マリエールウィル高崎</strong><br>
+      〒370-0069 群馬県高崎市飯塚町1361<br>
+      JR高崎問屋町駅 徒歩約10分<br>
+      駐車場：無料（300台）</p>
 
       <div class="map-iframe">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6427.586553130519!2d139.0104754112774!3d36.34155969330393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601e8d6dc8526ec7%3A0xe32fadcc9f5515a!2z44Oe44Oq44Ko44O844OrV0lMTOmrmOW0jg!5e0!3m2!1sja!2sjp!4v1766810530377!5m2!1sja!2sjp"
-          style="border:0;"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        >
-        </iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3211.5833215273445!2d139.0145242763261!3d36.34661849317531!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601ef3381e4c7675%3A0xc3f8e582846f7f6d!2z44Oe44Oq44Ko44O844Or44Km44Kj44Or6auY5bSO!5e0!3m2!1sja!2sjp!4v1700000000000" allowfullscreen="" loading="lazy"></iframe>
       </div>
-    </div>
+    </section>
 
-    <div id="seating" class="tab-content">
+    <section id="seating" class="tab-content">
       <h2>席次表</h2>
-
       <div class="search-box">
-        <input
-          type="text"
-          id="nameSearch"
-          placeholder="お名前を入力してください"
-        />
-      </div>
-
-      <div class="zoom-controls">
-        <button type="button" onclick="zoomIn()">＋</button>
-        <button type="button" onclick="zoomOut()">－</button>
-        <button type="button" onclick="zoomReset()">リセット</button>
+        <input type="text" id="nameSearch" placeholder="お名前で席を検索">
       </div>
       <div class="map-scroll">
-        <div class="map-container" id="mapContainer">
-          <div class="map-wrapper">
-
-            <!-- ===== 高砂 ===== -->
-            <div class="head-table" id="headTable">
-              <div class="head-label">高砂</div>
-              <div class="head-names">一就 & 美嵐</div>
-            </div>
-
-            <!-- ===== 入口 ===== -->
-            <div class="entrance">
-              入 口
-            </div>
-
-            <!-- ===== テーブルA ===== -->
-            <div class="table" style="top: 220px; left: 150px;">
-              <div class="table-number">A</div>
-              <div class="seat" data-index="0">山田 太郎</div>
-              <div class="seat" data-index="1">佐藤 花子</div>
-              <div class="seat" data-index="2">鈴木 一郎</div>
-              <div class="seat" data-index="3">高橋 美咲</div>
-              <div class="seat" data-index="4">伊藤 健</div>
-              <div class="seat" data-index="5">渡辺 彩</div>
-              <div class="seat" data-index="6">小林 剛</div>
-              <div class="seat" data-index="7">加藤 優</div>
-            </div>
-
-            <!-- ===== テーブルB ===== -->
-            <div class="table" style="top: 220px; left: 500px;">
-              <div class="table-number">B</div>
-              <div class="seat" data-index="0">中村 恒一</div>
-              <div class="seat" data-index="1">山本 玲奈</div>
-              <div class="seat" data-index="2">森 大輔</div>
-              <div class="seat" data-index="3">阿部 由美</div>
-              <div class="seat" data-index="4">清水 翔</div>
-              <div class="seat" data-index="5">斎藤 真央</div>
-              <div class="seat" data-index="6">松本 恒一</div>
-              <div class="seat" data-index="7">岡田 美穂</div>
-            </div>
-
-            <!-- ===== テーブルC ===== -->
-            <div class="table" style="top: 220px; left: 850px;">
-              <div class="table-number">C</div>
-              <div class="seat" data-index="0">福田 恒一</div>
-              <div class="seat" data-index="1">西村 佳奈</div>
-              <div class="seat" data-index="2">藤田 直樹</div>
-              <div class="seat" data-index="3">三浦 彩香</div>
-              <div class="seat" data-index="4">石川 健太</div>
-              <div class="seat" data-index="5">小川 里奈</div>
-              <div class="seat" data-index="6">前田 恒一</div>
-              <div class="seat" data-index="7">岡本 美月</div>
-            </div>
-
-            <!-- ===== テーブルD ===== -->
-            <div class="table" style="top: 220px; left: 1200px;">
-              <div class="table-number">D</div>
-              <div class="seat" data-index="0">長谷川 陸</div>
-              <div class="seat" data-index="1">石井 由佳</div>
-              <div class="seat" data-index="2">村上 恒一</div>
-              <div class="seat" data-index="3">近藤 彩</div>
-              <div class="seat" data-index="4">金子 恒一</div>
-              <div class="seat" data-index="5">内田 真由</div>
-              <div class="seat" data-index="6">遠藤 健</div>
-              <div class="seat" data-index="7">青木 美奈</div>
-            </div>
-
-            <!-- ===== テーブルE ===== -->
-            <div class="table" style="top: 600px; left: 150px;">
-              <div class="table-number">E</div>
-              <div class="seat" data-index="0">田中 恒一</div>
-              <div class="seat" data-index="1">安藤 彩</div>
-              <div class="seat" data-index="2">坂本 直人</div>
-              <div class="seat" data-index="3">宮崎 美咲</div>
-              <div class="seat" data-index="4">藤井 恒一</div>
-              <div class="seat" data-index="5">吉田 里穂</div>
-              <div class="seat" data-index="6">大野 健</div>
-              <div class="seat" data-index="7">川口 彩香</div>
-            </div>
-
-            <!-- ===== テーブルF ===== -->
-            <div class="table" style="top: 600px; left: 500px;">
-              <div class="table-number">F</div>
-              <div class="seat" data-index="0">小田 恒一</div>
-              <div class="seat" data-index="1">高田 美優</div>
-              <div class="seat" data-index="2">本田 健一</div>
-              <div class="seat" data-index="3">今井 彩</div>
-              <div class="seat" data-index="4">松田 恒一</div>
-              <div class="seat" data-index="5">原 里奈</div>
-              <div class="seat" data-index="6">黒田 剛</div>
-              <div class="seat" data-index="7">永井 美穂</div>
-            </div>
-
-            <!-- ===== テーブルG ===== -->
-            <div class="table" style="top: 600px; left: 850px;">
-              <div class="table-number">G</div>
-              <div class="seat" data-index="0">平野 恒一</div>
-              <div class="seat" data-index="1">片山 彩</div>
-              <div class="seat" data-index="2">川崎 健</div>
-              <div class="seat" data-index="3">久保 美月</div>
-              <div class="seat" data-index="4">土屋 恒一</div>
-              <div class="seat" data-index="5">水野 彩香</div>
-              <div class="seat" data-index="6">菅原 剛</div>
-              <div class="seat" data-index="7">野口 美和</div>
-            </div>
-
-            <!-- ===== テーブルH ===== -->
-            <div class="table" style="top: 600px; left: 1200px;">
-              <div class="table-number">H</div>
-              <div class="seat" data-index="0">新井 恒一</div>
-              <div class="seat" data-index="1">桜井 美里</div>
-              <div class="seat" data-index="2">塚本 健太</div>
-              <div class="seat" data-index="3">小松 彩</div>
-              <div class="seat" data-index="4">堀内 恒一</div>
-              <div class="seat" data-index="5">須藤 美咲</div>
-              <div class="seat" data-index="6">関口 剛</div>
-              <div class="seat" data-index="7">森下 美帆</div>
-            </div>
-
+        <div class="map-wrapper" id="mapWrapper">
+          
+          <div class="head-table" id="headTable">
+            <div class="head-label">高砂</div>
+            <div class="head-names">一就 & 美嵐</div>
           </div>
+
+          <div class="entrance">入 口</div>
+
+          <div class="table" style="top: 220px; left: 150px;">
+            <div class="table-number">A</div>
+            <div class="seat" data-index="0">山田 太郎</div>
+            <div class="seat" data-index="1">佐藤 花子</div>
+            <div class="seat" data-index="2">鈴木 一郎</div>
+            <div class="seat" data-index="3">高橋 美咲</div>
+            <div class="seat" data-index="4">伊藤 健</div>
+            <div class="seat" data-index="5">渡辺 彩</div>
+            <div class="seat" data-index="6">小林 剛</div>
+            <div class="seat" data-index="7">加藤 優</div>
+          </div>
+
+          <div class="table" style="top: 220px; left: 500px;"><div class="table-number">B</div><div class="seat" data-index="0">中村 恒一</div><div class="seat" data-index="1">山本 玲奈</div><div class="seat" data-index="2">森 大輔</div><div class="seat" data-index="3">阿部 由美</div><div class="seat" data-index="4">清水 翔</div><div class="seat" data-index="5">斎藤 真央</div><div class="seat" data-index="6">松本 恒一</div><div class="seat" data-index="7">岡田 美穂</div></div>
+          <div class="table" style="top: 220px; left: 850px;"><div class="table-number">C</div><div class="seat" data-index="0">福田 恒一</div><div class="seat" data-index="1">西村 佳奈</div><div class="seat" data-index="2">藤田 直樹</div><div class="seat" data-index="3">三浦 彩香</div><div class="seat" data-index="4">石川 健太</div><div class="seat" data-index="5">小川 里奈</div><div class="seat" data-index="6">前田 恒一</div><div class="seat" data-index="7">岡本 美月</div></div>
+          <div class="table" style="top: 220px; left: 1200px;"><div class="table-number">D</div><div class="seat" data-index="0">長谷川 陸</div><div class="seat" data-index="1">石井 由佳</div><div class="seat" data-index="2">村上 恒一</div><div class="seat" data-index="3">近藤 彩</div><div class="seat" data-index="4">金子 恒一</div><div class="seat" data-index="5">内田 真由</div><div class="seat" data-index="6">遠藤 健</div><div class="seat" data-index="7">青木 美奈</div></div>
+          <div class="table" style="top: 600px; left: 150px;"><div class="table-number">E</div><div class="seat" data-index="0">田中 恒一</div><div class="seat" data-index="1">安藤 彩</div><div class="seat" data-index="2">坂本 直人</div><div class="seat" data-index="3">宮崎 美咲</div><div class="seat" data-index="4">藤井 恒一</div><div class="seat" data-index="5">吉田 里穂</div><div class="seat" data-index="6">大野 健</div><div class="seat" data-index="7">川口 彩香</div></div>
+          <div class="table" style="top: 600px; left: 500px;"><div class="table-number">F</div><div class="seat" data-index="0">小田 恒一</div><div class="seat" data-index="1">高田 美優</div><div class="seat" data-index="2">本田 健一</div><div class="seat" data-index="3">今井 彩</div><div class="seat" data-index="4">松田 恒一</div><div class="seat" data-index="5">原 里奈</div><div class="seat" data-index="6">黒田 剛</div><div class="seat" data-index="7">永井 美穂</div></div>
+          <div class="table" style="top: 600px; left: 850px;"><div class="table-number">G</div><div class="seat" data-index="0">平野 恒一</div><div class="seat" data-index="1">片山 彩</div><div class="seat" data-index="2">川崎 健</div><div class="seat" data-index="3">久保 美月</div><div class="seat" data-index="4">土屋 恒一</div><div class="seat" data-index="5">水野 彩香</div><div class="seat" data-index="6">菅原 剛</div><div class="seat" data-index="7">野口 美和</div></div>
+          <div class="table" style="top: 600px; left: 1200px;"><div class="table-number">H</div><div class="seat" data-index="0">新井 恒一</div><div class="seat" data-index="1">桜井 美里</div><div class="seat" data-index="2">塚本 健太</div><div class="seat" data-index="3">小松 彩</div><div class="seat" data-index="4">堀内 恒一</div><div class="seat" data-index="5">須藤 美咲</div><div class="seat" data-index="6">関口 剛</div><div class="seat" data-index="7">森下 美帆</div></div>
+
         </div>
       </div>
       <p class="note">※席次は変更となる場合がございます</p>
-    </div>
+    </section>
 
-    <div id="schedule" class="tab-content">
+    <section id="schedule" class="tab-content">
       <h2>当日のスケジュール</h2>
-
       <ul class="schedule-list">
-        <li>
-          <span class="time">11:00</span>
-          <div>
-            <strong>ウェルカムパーティー</strong><br>
-            <span class="place">（1Fロビーにて）</span>
-          </div>
-        </li>
-
-        <li>
-          <span class="time">12:00</span>
-          <div>
-            <strong>挙式</strong><br>
-            <span class="place">（大聖堂にて）</span>
-          </div>
-        </li>
-
-        <li>
-          <span class="time">12:30</span>
-          <div>
-            <strong>ウェルカムパーティー</strong><br>
-            <span class="place">（テラスにて）</span>
-          </div>
-        </li>
-
-        <li>
-          <span class="time">13:30</span>
-          <div>
-            <strong>披露宴</strong><br>
-            <span class="place">（披露宴会場にて）</span>
-          </div>
-        </li>
+        <li><span class="time">11:00</span><div><strong>ウェルカムパーティー</strong><br><span class="place">（1Fロビーにて）</span></div></li>
+        <li><span class="time">12:00</span><div><strong>挙式</strong><br><span class="place">（大聖堂にて）</span></div></li>
+        <li><span class="time">12:30</span><div><strong>ウェルカムパーティー</strong><br><span class="place">（テラスにて）</span></div></li>
+        <li><span class="time">13:30</span><div><strong>披露宴</strong><br><span class="place">（披露宴会場にて）</span></div></li>
       </ul>
-    </div>
-  </div>
+    </section>
+  </main>
 
   <script>
-    /* ===== タブ切り替え ===== */
+    /* 1. タブ切り替え */
     const tabs = document.querySelectorAll('.tab');
     const contents = document.querySelectorAll('.tab-content');
-
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.dataset.tab;
@@ -759,140 +386,37 @@
         contents.forEach(c => c.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(target).classList.add('active');
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (target === 'seating') setTimeout(centerHeadTable, 50);
       });
     });
-  </script>
 
-  <script>
-    /* ===== 席次マップ：ズームボタン方式 ===== */
-    let mapScale = 1;
-    const mapWrapper = document.querySelector('.map-wrapper');
-
-    function applyZoom() {
-      mapWrapper.style.transform = `scale(${mapScale})`;
-    }
-
-    function zoomIn() {
-      mapScale = Math.min(mapScale + 0.2, 2.5);
-      applyZoom();
-    }
-
-    function zoomOut() {
-      mapScale = Math.max(mapScale - 0.2, 0.6);
-      applyZoom();
-    }
-
-    function zoomReset() {
-      mapScale = 1;
-      applyZoom();
-      centerHeadTable();
-    }
-  </script>
-
-  <script>
-  /* ===== 初期表示：高砂を中央に ===== */
-
-  function centerHeadTable() {
-    const scrollArea = document.querySelector('.map-scroll');
-    const headTable = document.getElementById('headTable');
-
-    if (!scrollArea || !headTable) return;
-
-    const scrollRect = scrollArea.getBoundingClientRect();
-    const headRect = headTable.getBoundingClientRect();
-
-    const offsetLeft =
-      headTable.offsetLeft -
-      scrollRect.width / 2 +
-      headRect.width / 2;
-
-    const offsetTop =
-      headTable.offsetTop -
-      scrollRect.height / 2 +
-      headRect.height / 2;
-
-    scrollArea.scrollTo({
-      left: offsetLeft,
-      top: offsetTop,
-      behavior: 'instant'
-    });
-  }
-
-  /* ページ読み込み後 */
-  window.addEventListener('load', centerHeadTable);
-
-  /* 席次表タブを開いたときにも実行 */
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      if (tab.dataset.tab === 'seating') {
-        setTimeout(centerHeadTable, 50);
-      }
-    });
-  });
-  </script>
-
-  <script>
-    /* ===== 名前検索機能 ===== */
+    /* 2. 名前検索 */
     const searchInput = document.getElementById("nameSearch");
-    const seats = document.querySelectorAll(".seat");
-
     searchInput.addEventListener("input", () => {
       const keyword = searchInput.value.trim();
-
+      const seats = document.querySelectorAll(".seat");
       seats.forEach(seat => {
         seat.classList.remove("highlight");
-      });
-
-      if (!keyword) return;
-
-      seats.forEach(seat => {
-        const name = seat.textContent;
-
-        if (name.includes(keyword)) {
+        if (keyword && seat.textContent.includes(keyword)) {
           seat.classList.add("highlight");
-
-          /* 見つかった席を中央に */
-          seat.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-            inline: "center"
-          });
+          seat.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
         }
       });
     });
+
+    /* 3. 席次表の初期位置設定（高砂を中央に） */
+    function centerHeadTable() {
+      const scrollArea = document.querySelector('.map-scroll');
+      const headTable = document.getElementById('headTable');
+      if (!scrollArea || !headTable) return;
+      const scrollRect = scrollArea.getBoundingClientRect();
+      const headRect = headTable.getBoundingClientRect();
+      const offsetLeft = headTable.offsetLeft - scrollRect.width / 2 + headRect.width / 2;
+      const offsetTop = headTable.offsetTop - scrollRect.height / 2 + headRect.height / 2;
+      scrollArea.scrollTo({ left: offsetLeft, top: offsetTop, behavior: 'instant' });
+    }
+    window.addEventListener('load', centerHeadTable);
   </script>
-
-  <script>
-  /* ===== 初期表示は全体表示（最大ズームアウト） ===== */
-  window.addEventListener("load", () => {
-    const scroll = document.querySelector(".map-scroll");
-    const map = document.querySelector(".map-wrapper");
-
-    if (!scroll || !map) return;
-
-    const scaleX = scroll.clientWidth / map.offsetWidth;
-    const scaleY = scroll.clientHeight / map.offsetHeight;
-
-    /* 画面に収まる最小倍率 */
-    const scale = Math.min(scaleX, scaleY, 1);
-
-    map.style.zoom = scale;
-
-    /* 中央に寄せる */
-    const offsetX = (map.offsetWidth * scale - scroll.clientWidth) / 2;
-    const offsetY = (map.offsetHeight * scale - scroll.clientHeight) / 2;
-
-    scroll.scrollTo({
-      left: offsetX > 0 ? offsetX : 0,
-      top: offsetY > 0 ? offsetY : 0,
-      behavior: "instant"
-    });
-  });
-  </script>
-
 </body>
 </html>
